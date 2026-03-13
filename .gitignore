@@ -1,0 +1,16 @@
+/target
+/Cargo.lock
+
+# Output files commonly created while testing minigen locally.
+/*.fa
+/*.fasta
+/*.gff
+/*.gff3
+/*.gtf
+
+# Editor and OS noise.
+/.idea
+/.vscode
+*.swp
+*.swo
+.DS_Store

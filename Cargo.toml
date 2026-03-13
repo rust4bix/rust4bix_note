@@ -1,0 +1,11 @@
+[package]
+name = "rust4bix_note"
+version = "0.1.0"
+edition = "2021"
+
+[[example]]
+name = "noodle_fa"
+path = "examples/fasta/noodle_fa.rs"
+
+[dependencies]
+noodles-fasta = "0.45"
