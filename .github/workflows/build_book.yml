@@ -1,0 +1,96 @@
+name: Build Book
+
+on:
+  push:
+    paths:
+      - "book/**"
+      - ".github/workflows/build_book.yml"
+  pull_request:
+    paths:
+      - "book/**"
+      - ".github/workflows/build_book.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-book:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Generate Quarto book config when missing
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd book
+
+          if [[ -f _quarto.yml || -f _quarto.yaml ]]; then
+            exit 0
+          fi
+
+          mapfile -t chapters < <(
+            find . -type f \( -name '*.qmd' -o -name '*.md' \) \
+              ! -name '_quarto.yml' \
+              ! -name '_quarto.yaml' \
+              ! -name 'index.qmd' \
+              ! -name 'index.md' \
+              | sort
+          )
+
+          if [[ ${#chapters[@]} -eq 0 ]]; then
+            echo "No book chapters found under book/." >&2
+            exit 1
+          fi
+
+          if [[ -f index.qmd ]]; then
+            index_file="index.qmd"
+          elif [[ -f index.md ]]; then
+            index_file="index.md"
+          else
+            index_file="index.qmd"
+            cat <<'EOF' > "$index_file"
+---
+title: "rust4bix_note"
+---
+
+# rust4bix_note
+
+This index page was generated automatically during CI.
+EOF
+          fi
+
+          {
+            echo "project:"
+            echo "  type: book"
+            echo "book:"
+            echo "  title: rust4bix_note"
+            echo "  chapters:"
+            echo "    - ${index_file}"
+
+            for chapter in "${chapters[@]}"; do
+              chapter="${chapter#./}"
+              echo "    - ${chapter}"
+            done
+
+            echo "format:"
+            echo "  html:"
+            echo "    toc: true"
+            echo "    number-sections: true"
+          } > _quarto.yml
+
+      - name: Render book
+        shell: bash
+        run: quarto render book
+
+      - name: Upload book artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: book-site
+          path: book/_book
