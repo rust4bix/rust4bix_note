@@ -8,7 +8,7 @@
     },
     "ghcr.io/devcontainers/features/rust:1": {}
   },
-  "postCreateCommand": "python3 -m pip install --user --upgrade pip jupyterlab ipykernel && cargo install --locked evcxr_jupyter && ~/.cargo/bin/evcxr_jupyter --install",
+  "postCreateCommand": "python3 -m pip install --user --upgrade pip jupyterlab ipykernel && CARGO_BUILD_JOBS=1 cargo install --locked evcxr_jupyter && \"$(dirname \"$(command -v cargo)\")/evcxr_jupyter\" --install",
   "customizations": {
     "vscode": {
       "extensions": [
