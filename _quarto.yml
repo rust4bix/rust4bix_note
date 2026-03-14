@@ -1,0 +1,20 @@
+project:
+  type: book
+
+book:
+  title: "Practical Rust for Bioinformatics"
+  author: "Shaojun Xie"
+  date: ""
+  chapters:
+    - index.qmd
+    - fasta.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt
+  epub:
+    cover-image: cover.png
