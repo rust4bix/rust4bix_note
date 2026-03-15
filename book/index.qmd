@@ -2,4 +2,7 @@
 
 ## Overview
 
-xx
+
+```{rust}
+println!("--- Introduction to FASTA with noodles-fasta ---");
+```
