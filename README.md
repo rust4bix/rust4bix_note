@@ -15,4 +15,8 @@ https://doc.rust-lang.org/nomicon/
 Rust concepts I wish I learned earlier: 
 https://rauljordan.com/rust-concepts-i-wish-i-learned-earlier/
 
+The Little Book of Rust Macros: 
+https://danielkeep.github.io/tlborm/book/index.html
+
+
 
