@@ -1,0 +1,34 @@
+site_name: Practical Rust for Bioinformatics
+site_author: Shaojun Xie
+site_description: Notes and examples for learning Rust in bioinformatics
+
+repo_name: rust4bix/rust4bix-book
+repo_url: https://github.com/rust4bix/rust4bix-book
+
+copyright: Copyright &copy; 2026 Shaojun Xie
+
+docs_dir: docs
+
+theme:
+  name: readthedocs
+  highlightjs: true
+  hljs_languages:
+    - rust
+    - yaml
+    - bash
+
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_javascript:
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+# Page Tree
+nav:
+  
+  - Get ready for the course: 
+    - Basic Linux:  fasta_io.md
+
+  - Bulk RNA-seq:
+    - Read QC and alignment: rs_intro_ch3_read_write_file.md

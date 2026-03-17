@@ -19,4 +19,5 @@ The Little Book of Rust Macros:
 https://danielkeep.github.io/tlborm/book/index.html
 
 
-
+Rust Beginner → “Hard Mode” (1-week practicum): 
+https://github.com/stela2502/Turoial_Rust_beginner_hard

@@ -7,5 +7,14 @@ edition = "2021"
 name = "noodle_fa"
 path = "examples/fasta/noodle_fa.rs"
 
+[[example]]
+name = "cli_basic"
+path = "examples/cli/cli_basic.rs"
+
+[[example]]
+name = "path_pathbuf"
+path = "examples/basic/path_pathbuf.rs"
+
+
 [dependencies]
 noodles-fasta = "0.45"
