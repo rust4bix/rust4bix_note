@@ -7,7 +7,7 @@ on:
       - 'mkdocs.yaml'
       - 'book/**'
       - '.github/workflows/build_book.yml'
-      
+
 permissions:
   contents: write
 jobs:
@@ -27,7 +27,7 @@ jobs:
         run: |
           rm -rf docs
           mkdir -p docs
-          cp book/index.qmd docs/index.md
+          cp book/index.md docs/index.md
           find book -type f -name "*.ipynb" ! -path "*/.ipynb_checkpoints/*" -print0 \
             | xargs -0 -I{} jupyter nbconvert --to markdown --output-dir docs "{}"
       - run: mkdocs gh-deploy --force --remote-branch gh-pages # mkdocs gh-deploy --force
