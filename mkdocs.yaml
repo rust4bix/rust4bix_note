@@ -27,8 +27,8 @@ extra_javascript:
 # Page Tree
 nav:
   
-  - Get ready for the course: 
-    - Basic Linux:  fasta_io.md
+  - Introduction to Rust: 
+    - Core syntax and types:  rs_intro_ch1_core_syntax_types.md
 
   - Bulk RNA-seq:
     - Read QC and alignment: rs_intro_ch3_read_write_file.md
