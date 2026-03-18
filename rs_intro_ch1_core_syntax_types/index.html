@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Shaojun Xie" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Core syntax and types - Practical Rust for Bioinformatics</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Core syntax and types";
+        var mkdocs_page_input_path = "rs_intro_ch1_core_syntax_types.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/rust.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/yaml.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/bash.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Practical Rust for Bioinformatics
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Introduction to Rust</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Core syntax and types</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#why-syntax-matters-in-bioinformatics">Why Syntax Matters in Bioinformatics</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#variables-and-immutability">Variables and Immutability</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#mutable-variables">Mutable variables</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#shadowing-rebinding-variables">Shadowing (Rebinding Variables)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#scalar-types">Scalar Types</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#integers">Integers</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#floating-point">Floating point</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#boolean">Boolean</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#character">Character</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Bulk RNA-seq</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../rs_intro_ch3_read_write_file/">Read QC and alignment</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Practical Rust for Bioinformatics</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Introduction to Rust</li>
+      <li class="breadcrumb-item active">Core syntax and types</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/rust4bix/rust4bix-book/edit/master/docs/rs_intro_ch1_core_syntax_types.md">Edit on rust4bix/rust4bix-book</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="core-syntax-types">Core Syntax &amp; Types</h1>
+<h2 id="why-syntax-matters-in-bioinformatics">Why Syntax Matters in Bioinformatics</h2>
+<p>In bioinformatics, we routinely process gigabyte–terabyte scale data (FASTQ, BAM, VCF). Small inefficiencies in syntax or type usage can translate into hours of runtime or gigabytes of wasted memory.</p>
+<p>Rust’s syntax is not just aesthetic—it enforces:</p>
+<ul>
+<li>
+<p>Memory safety (no silent bugs)</p>
+</li>
+<li>
+<p>Explicit data handling</p>
+</li>
+<li>
+<p>High performance without a garbage collector</p>
+</li>
+</ul>
+<p>This chapter builds the foundation for writing correct and fast genomic pipelines.</p>
+<h2 id="variables-and-immutability">Variables and Immutability</h2>
+<p>Rust variables are immutable by default.</p>
+<pre><code class="language-Rust">let x = 10;
+// x = 20; // error
+</code></pre>
+<p>If you run the Rust code below: </p>
+<pre><code>let x = 10;
+x = 20; // error
+</code></pre>
+<p>You will get the error message shown below: </p>
+<pre><code>[E0384] Error: cannot assign twice to immutable variable `x`
+   ╭─[ command_2:1:1 ]
+   │
+ 1 │ let x = 10;
+   │     ┬  
+   │     ╰── first assignment to `x`
+   │     │  
+   │     ╰── help: consider making this binding mutable: `mut `
+ 2 │ x = 20; // error
+   │ ───┬──  
+   │    ╰──── cannot assign twice to immutable variable
+   │ 
+   │ Note: You can change an existing variable to mutable like: `let mut x = x;`
+───╯
+[unused_assignments] Error: value assigned to `x` is never read
+   ╭─[ command_2:1:1 ]
+   │
+ 1 │ let x = 10;
+   │         ─┬  
+   │          ╰── warning: value assigned to `x` is never read
+───╯
+</code></pre>
+<h2 id="mutable-variables">Mutable variables</h2>
+<pre><code class="language-Rust">let mut count = 0;
+count += 1;
+println!(&quot;count: {}&quot;, count);
+</code></pre>
+<pre><code>count: 1
+</code></pre>
+<p>Use <code>mut</code> only when necessary—this reduces bugs and improves reasoning.</p>
+<h2 id="shadowing-rebinding-variables">Shadowing (Rebinding Variables)</h2>
+<pre><code class="language-Rust">let x = 5;
+let x = x + 1;
+let x = x * 2;
+println!(&quot;x: {}&quot;, x);
+</code></pre>
+<pre><code>x: 12
+</code></pre>
+<p>Unlike mutation, shadowing creates a new variable.</p>
+<pre><code class="language-Rust">let seq = &quot;acgt&quot;;
+let seq = seq.to_uppercase();
+println!(&quot;seq: {}&quot;, seq);
+</code></pre>
+<pre><code>seq: ACGT
+</code></pre>
+<p>You transform data without mutating the original reference.</p>
+<h2 id="scalar-types">Scalar Types</h2>
+<h3 id="integers">Integers</h3>
+<pre><code class="language-Rust">let x: i32 = 10;
+let y: u64 = 100;
+</code></pre>
+<p>Use cases:</p>
+<ul>
+<li>
+<p><code>u64</code> → genome positions</p>
+</li>
+<li>
+<p><code>i32</code> → score differences</p>
+</li>
+</ul>
+<h3 id="floating-point">Floating point</h3>
+<pre><code class="language-Rust">let gc_ratio: f64 = 0.42;
+</code></pre>
+<h3 id="boolean">Boolean</h3>
+<pre><code class="language-Rust">let is_mapped = true;
+let is_cell = false;
+println!(&quot;is_mapped: {}&quot;, is_mapped);
+println!(&quot;is_cell: {}&quot;, is_cell);
+</code></pre>
+<pre><code>is_mapped: true
+is_cell: false
+</code></pre>
+<h3 id="character">Character</h3>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../rs_intro_ch3_read_write_file/" class="btn btn-neutral float-right" title="Read QC and alignment">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Copyright &copy; 2026 Shaojun Xie</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/rust4bix/rust4bix-book" class="fa fa-code-fork" style="color: #fcfcfc"> rust4bix/rust4bix-book</a>
+        </span>
+    
+    
+    
+      <span><a href="../rs_intro_ch3_read_write_file/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
